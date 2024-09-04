@@ -1,5 +1,6 @@
 package com.hotelReservation;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,20 @@ public class HotelReservationSystem {
 	
 	public List<Hotel> getHotel(){
 		return hotels;
+	}
+	
+	public Hotel findCheapestHotel(LocalDate startTime, LocalDate endTime) {
+		Hotel cheapestHotel = null;
+		double minRate = Double.MAX_VALUE;
+		
+		for(Hotel hotel : hotels) {
+			double totalRate = hotel.totalRateCalculate(startTime, endTime);
+			if(totalRate < minRate) {
+				minRate = totalRate;
+				cheapestHotel = hotel;
+			}
+		}
+		return cheapestHotel;
 	}
 
 	public static void main(String[] args) {
