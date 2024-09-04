@@ -12,10 +12,11 @@ public class HotelReservationSystem {
 		this.hotels = new ArrayList<>();
 	}
 	
-	public void addHotel(String name, double customerRate) {
-		Hotel newHotel = new Hotel(name, customerRate);
-		hotels.add(newHotel);
-	}
+	public void addHotel(String name, double weekdayRate, double weekendRate) {
+        Hotel hotel = new Hotel(name, weekdayRate, weekendRate);
+        hotels.add(hotel);
+        System.out.println("Hotel added successfully.");
+    }
 	
 	public List<Hotel> getHotel(){
 		return hotels;
