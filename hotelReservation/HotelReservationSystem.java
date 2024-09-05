@@ -51,6 +51,23 @@ public class HotelReservationSystem {
 		}
 		return bestRatedCheapestHotel;
 	}
+	
+	public List<Hotel> findBestRatedHotel(LocalDate startTime, LocalDate endTime) {
+		
+		List<Hotel> bestRatedHotel = new ArrayList<>();
+		int highestRating = Integer.MIN_VALUE;
+		
+		for(Hotel hotel : hotels) {
+			if(hotel.getRating() > highestRating) {
+				highestRating = hotel.getRating();
+				bestRatedHotel.clear();
+				bestRatedHotel.add(hotel);
+			}else if (hotel.getRating() == highestRating) {
+				bestRatedHotel.add(hotel);
+			}
+		}
+		return bestRatedHotel;
+	}
 
 	public static void main(String[] args) {
 		
