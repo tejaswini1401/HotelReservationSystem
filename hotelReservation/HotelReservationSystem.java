@@ -22,15 +22,18 @@ public class HotelReservationSystem {
 		return hotels;
 	}
 	
-	public Hotel findCheapestHotel(LocalDate startTime, LocalDate endTime) {
-		Hotel cheapestHotel = null;
+	public List<Hotel> findCheapestHotel(LocalDate startTime, LocalDate endTime) {
+		List<Hotel> cheapestHotel = new ArrayList<>();
 		double minRate = Double.MAX_VALUE;
 		
 		for(Hotel hotel : hotels) {
 			double totalRate = hotel.totalRateCalculate(startTime, endTime);
 			if(totalRate < minRate) {
 				minRate = totalRate;
-				cheapestHotel = hotel;
+				cheapestHotel.clear();
+				cheapestHotel.add(hotel);
+			}else if(totalRate == minRate) {
+				cheapestHotel.add(hotel);
 			}
 		}
 		return cheapestHotel;
