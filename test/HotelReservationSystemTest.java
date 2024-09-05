@@ -53,24 +53,14 @@ class HotelReservationSystemTest {
         LocalDate startDate = LocalDate.of(2020, 9,11); 
         LocalDate endDate = LocalDate.of(2020, 9, 12);   
 
-        List<Hotel> cheapestHotels = hotelReservationSystem.findCheapestHotel(startDate, endDate);
+        List<Hotel> bestRatedcheapestHotels = hotelReservationSystem.findCheapestHotel(startDate, endDate);
         
-        assertNotNull(cheapestHotels);
-
-        assertTrue(cheapestHotels.stream().anyMatch(hotel -> hotel.getName().equals("Lakewood")));
-        assertTrue(cheapestHotels.stream().anyMatch(hotel -> hotel.getName().equals("Bridgewood")));
-        assertFalse(cheapestHotels.stream().anyMatch(hotel -> hotel.getName().equals("Vedant")));
-
+        assertNotNull(bestRatedcheapestHotels);
+        assertEquals(1,bestRatedcheapestHotels.size());        
         
-        Hotel lakewood = cheapestHotels.stream()
-        		.filter(h -> h.getName().equals("Lakewood"))
-        		.findFirst().get();
-	    assertEquals(300, lakewood.totalRateCalculate(startDate, endDate));
-	    
-	    Hotel bridgewood = cheapestHotels.stream()
-	            .filter(h -> h.getName().equals("Bridgewood"))
-	            .findFirst().get();
-	    assertEquals(300, bridgewood.totalRateCalculate(startDate, endDate));
-	    
-    }
+        assertEquals("Lakewood",bestRatedcheapestHotels.get(0).getName());
+        assertEquals(4,bestRatedcheapestHotels.get(0).getRating());
+        assertEquals(300,bestRatedcheapestHotels.get(0).totalRateCalculate(startDate, endDate));        
+    }    
+    
 }
