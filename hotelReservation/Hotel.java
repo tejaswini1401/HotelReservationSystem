@@ -6,37 +6,17 @@ public class Hotel {
 	private String name;
 	private double weekdayRate;
 	private double weekendRate;
+	private int rating;
 	
-	public Hotel(String name, double weekdayRate, double weekendRate) {
+	public Hotel(String name, double weekdayRate, double weekendRate, int rating) {
 		super();
 		this.name = name;
 		this.weekdayRate = weekdayRate;
 		this.weekendRate = weekendRate;
+		this.rating = rating;
 	}
 	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public double getWeekdayRate() {
-		return weekdayRate;
-	}
-
-	public void setWeekdayRate(double weekdayRate) {
-		this.weekdayRate = weekdayRate;
-	}
-
-	public double getWeekendRate() {
-		return weekendRate;
-	}
-
-	public void setWeekendRate(double weekendRate) {
-		this.weekendRate = weekendRate;
-	}
+	
 	public double totalRateCalculate(LocalDate startDate, LocalDate endDate) {
         double totalRate = 0;
         LocalDate date = startDate;
@@ -53,8 +33,50 @@ public class Hotel {
         return totalRate;
     }
 
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public double getWeekdayRate() {
+		return weekdayRate;
+	}
+
+
+	public void setWeekdayRate(double weekdayRate) {
+		this.weekdayRate = weekdayRate;
+	}
+
+
+	public double getWeekendRate() {
+		return weekendRate;
+	}
+
+
+	public void setWeekendRate(double weekendRate) {
+		this.weekendRate = weekendRate;
+	}
+
+
+	public int getRating() {
+		return rating;
+	}
+
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Hotel [name=" + name + ", weekdayRate=" + weekdayRate + ", weekendRate=" + weekendRate + "]";
+		return "Hotel [name=" + name + ", weekdayRate=" + weekdayRate + ", weekendRate=" + weekendRate + ", rating="
+				+ rating + "]";
 	}
 }
