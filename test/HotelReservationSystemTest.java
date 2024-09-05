@@ -18,9 +18,9 @@ class HotelReservationSystemTest {
     @BeforeEach
     void setUp() {
         hotelReservationSystem = new HotelReservationSystem();
-        hotelReservationSystem.addHotel("Lakewood", 200, 100,4);
-        hotelReservationSystem.addHotel("Bridgewood", 350, 50,5);
-        hotelReservationSystem.addHotel("Vedant", 300, 40,2);
+        hotelReservationSystem.addHotel("Lakewood", 110, 90,80,80,3);
+        hotelReservationSystem.addHotel("Bridgewood", 150, 50,110,50,4);
+        hotelReservationSystem.addHotel("Ridgewood", 220, 150,100,40,5);
     }
 
     @Test
@@ -30,21 +30,27 @@ class HotelReservationSystemTest {
         
         assertEquals(3, hotels.size());
         assertEquals("Lakewood", hotels.get(0).getName());
-        assertEquals(200, hotels.get(0).getWeekdayRate());
-        assertEquals(100, hotels.get(0).getWeekendRate());
-        assertEquals(4, hotels.get(0).getRating());
+        assertEquals(110, hotels.get(0).getWeekdayRate());
+        assertEquals(90, hotels.get(0).getWeekendRate());
+        assertEquals(80, hotels.get(0).getWeekdayReward());
+        assertEquals(80, hotels.get(0).getWeekendReward());
+        assertEquals(3, hotels.get(0).getRating());
 
         
         assertEquals("Bridgewood", hotels.get(1).getName());
-        assertEquals(350, hotels.get(1).getWeekdayRate());
+        assertEquals(150, hotels.get(1).getWeekdayRate());
         assertEquals(50, hotels.get(1).getWeekendRate());
-        assertEquals(5, hotels.get(1).getRating());
+        assertEquals(110, hotels.get(1).getWeekdayReward());
+        assertEquals(50, hotels.get(1).getWeekendReward());
+        assertEquals(4, hotels.get(1).getRating());
 
         
-        assertEquals("Vedant", hotels.get(2).getName());
-        assertEquals(300, hotels.get(2).getWeekdayRate());
-        assertEquals(40, hotels.get(2).getWeekendRate());
-        assertEquals(2, hotels.get(2).getRating());
+        assertEquals("Ridgewood", hotels.get(2).getName());
+        assertEquals(220, hotels.get(2).getWeekdayRate());
+        assertEquals(150, hotels.get(2).getWeekendRate());
+        assertEquals(100, hotels.get(2).getWeekdayReward());
+        assertEquals(40, hotels.get(2).getWeekendReward());
+        assertEquals(5, hotels.get(2).getRating());
        
     }
     
@@ -53,14 +59,14 @@ class HotelReservationSystemTest {
     	 LocalDate startDate = LocalDate.of(2020, 9,11); 
          LocalDate endDate = LocalDate.of(2020, 9, 12);   
 
-         List<Hotel> bestRatedcheapestHotels = hotelReservationSystem.findCheapestHotel(startDate, endDate);
+         List<Hotel> bestRatedcheapestHotels = hotelReservationSystem.findCheapestHotel(startDate, endDate, false);
          
          assertNotNull(bestRatedcheapestHotels);
          assertEquals(1,bestRatedcheapestHotels.size());        
          
-         assertEquals("Lakewood",bestRatedcheapestHotels.get(0).getName());
+         assertEquals("Bridgewood",bestRatedcheapestHotels.get(0).getName());
          assertEquals(4,bestRatedcheapestHotels.get(0).getRating());
-         assertEquals(300,bestRatedcheapestHotels.get(0).totalRateCalculate(startDate, endDate));        
+         assertEquals(200,bestRatedcheapestHotels.get(0).totalRateCalculate(startDate, endDate, false));        
     }
     
     @Test
@@ -68,14 +74,14 @@ class HotelReservationSystemTest {
         LocalDate startDate = LocalDate.of(2020, 9,11); 
         LocalDate endDate = LocalDate.of(2020, 9, 12);   
 
-        List<Hotel> bestRatedHotels = hotelReservationSystem.findBestRatedHotel(startDate, endDate);
+        List<Hotel> bestRatedHotels = hotelReservationSystem.findBestRatedHotel(startDate, endDate,false);
         
         assertNotNull(bestRatedHotels);
         assertEquals(1,bestRatedHotels.size());        
         
-        assertEquals("Bridgewood",bestRatedHotels.get(0).getName());
+        assertEquals("Ridgewood",bestRatedHotels.get(0).getName());
         assertEquals(5,bestRatedHotels.get(0).getRating());
-        assertEquals(400,bestRatedHotels.get(0).totalRateCalculate(startDate, endDate));        
+        assertEquals(370,bestRatedHotels.get(0).totalRateCalculate(startDate, endDate,false));        
     }    
     
 }
