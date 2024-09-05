@@ -19,7 +19,7 @@ class HotelReservationSystemTest {
     void setUp() {
         hotelReservationSystem = new HotelReservationSystem();
         hotelReservationSystem.addHotel("Lakewood", 200, 100,4);
-        hotelReservationSystem.addHotel("Bridgewood", 250, 50,3);
+        hotelReservationSystem.addHotel("Bridgewood", 350, 50,5);
         hotelReservationSystem.addHotel("Vedant", 300, 40,2);
     }
 
@@ -36,9 +36,9 @@ class HotelReservationSystemTest {
 
         
         assertEquals("Bridgewood", hotels.get(1).getName());
-        assertEquals(250, hotels.get(1).getWeekdayRate());
+        assertEquals(350, hotels.get(1).getWeekdayRate());
         assertEquals(50, hotels.get(1).getWeekendRate());
-        assertEquals(3, hotels.get(1).getRating());
+        assertEquals(5, hotels.get(1).getRating());
 
         
         assertEquals("Vedant", hotels.get(2).getName());
@@ -49,18 +49,33 @@ class HotelReservationSystemTest {
     }
     
     @Test
-    void testFindCheapestHotel() {
+    void testFindCheapestBestRatedHotel() {
+    	 LocalDate startDate = LocalDate.of(2020, 9,11); 
+         LocalDate endDate = LocalDate.of(2020, 9, 12);   
+
+         List<Hotel> bestRatedcheapestHotels = hotelReservationSystem.findCheapestHotel(startDate, endDate);
+         
+         assertNotNull(bestRatedcheapestHotels);
+         assertEquals(1,bestRatedcheapestHotels.size());        
+         
+         assertEquals("Lakewood",bestRatedcheapestHotels.get(0).getName());
+         assertEquals(4,bestRatedcheapestHotels.get(0).getRating());
+         assertEquals(300,bestRatedcheapestHotels.get(0).totalRateCalculate(startDate, endDate));        
+    }
+    
+    @Test
+    void testFindBestRatedHotel() {
         LocalDate startDate = LocalDate.of(2020, 9,11); 
         LocalDate endDate = LocalDate.of(2020, 9, 12);   
 
-        List<Hotel> bestRatedcheapestHotels = hotelReservationSystem.findCheapestHotel(startDate, endDate);
+        List<Hotel> bestRatedHotels = hotelReservationSystem.findBestRatedHotel(startDate, endDate);
         
-        assertNotNull(bestRatedcheapestHotels);
-        assertEquals(1,bestRatedcheapestHotels.size());        
+        assertNotNull(bestRatedHotels);
+        assertEquals(1,bestRatedHotels.size());        
         
-        assertEquals("Lakewood",bestRatedcheapestHotels.get(0).getName());
-        assertEquals(4,bestRatedcheapestHotels.get(0).getRating());
-        assertEquals(300,bestRatedcheapestHotels.get(0).totalRateCalculate(startDate, endDate));        
+        assertEquals("Bridgewood",bestRatedHotels.get(0).getName());
+        assertEquals(5,bestRatedHotels.get(0).getRating());
+        assertEquals(400,bestRatedHotels.get(0).totalRateCalculate(startDate, endDate));        
     }    
     
 }
