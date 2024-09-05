@@ -18,9 +18,9 @@ class HotelReservationSystemTest {
     @BeforeEach
     void setUp() {
         hotelReservationSystem = new HotelReservationSystem();
-        hotelReservationSystem.addHotel("Lakewood", 200, 100);
-        hotelReservationSystem.addHotel("Bridgewood", 250, 50);
-        hotelReservationSystem.addHotel("Vedant", 300, 40);
+        hotelReservationSystem.addHotel("Lakewood", 200, 100,4);
+        hotelReservationSystem.addHotel("Bridgewood", 250, 50,3);
+        hotelReservationSystem.addHotel("Vedant", 300, 40,2);
     }
 
     @Test
@@ -32,15 +32,20 @@ class HotelReservationSystemTest {
         assertEquals("Lakewood", hotels.get(0).getName());
         assertEquals(200, hotels.get(0).getWeekdayRate());
         assertEquals(100, hotels.get(0).getWeekendRate());
+        assertEquals(4, hotels.get(0).getRating());
+
         
         assertEquals("Bridgewood", hotels.get(1).getName());
         assertEquals(250, hotels.get(1).getWeekdayRate());
         assertEquals(50, hotels.get(1).getWeekendRate());
+        assertEquals(3, hotels.get(1).getRating());
+
         
         assertEquals("Vedant", hotels.get(2).getName());
         assertEquals(300, hotels.get(2).getWeekdayRate());
         assertEquals(40, hotels.get(2).getWeekendRate());
-        
+        assertEquals(2, hotels.get(2).getRating());
+       
     }
     
     @Test
