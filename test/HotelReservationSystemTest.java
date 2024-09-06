@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import com.hotelReservation.Hotel;
 import com.hotelReservation.HotelReservationSystem;
+import com.hotelReservation.InvalidInputException;
 
 class HotelReservationSystemTest {
     
@@ -55,11 +56,24 @@ class HotelReservationSystemTest {
     }
     
     @Test
-    void testFindCheapestBestRatedHotel() {
+	void testrewardCustomerCheapestHotel() throws InvalidInputException {
+		LocalDate startDate = LocalDate.of(2020, 9,11);//friday
+		LocalDate endDate = LocalDate.of(2020, 9,12);//saturday
+		
+		List<Hotel> rewardbestratedchepestHotel = hotelReservationSystem.findcheapestHotel(startDate, endDate,true);
+		
+     	assertNotNull(rewardbestratedchepestHotel);
+     	assertEquals(1,rewardbestratedchepestHotel.size());
+     	assertEquals("Ridgewood",rewardbestratedchepestHotel.get(0).getName());
+     	assertEquals(140,rewardbestratedchepestHotel.get(0).totalRateCalculate(startDate, endDate, true));
+	}
+   
+    @Test
+    void testFindCheapestBestRatedHotel() throws InvalidInputException{
     	 LocalDate startDate = LocalDate.of(2020, 9,11); 
          LocalDate endDate = LocalDate.of(2020, 9, 12);   
 
-         List<Hotel> bestRatedcheapestHotels = hotelReservationSystem.findCheapestHotel(startDate, endDate, false);
+         List<Hotel> bestRatedcheapestHotels = hotelReservationSystem.findcheapestHotel(startDate, endDate, false);
          
          assertNotNull(bestRatedcheapestHotels);
          assertEquals(1,bestRatedcheapestHotels.size());        
@@ -82,6 +96,30 @@ class HotelReservationSystemTest {
         assertEquals("Ridgewood",bestRatedHotels.get(0).getName());
         assertEquals(5,bestRatedHotels.get(0).getRating());
         assertEquals(370,bestRatedHotels.get(0).totalRateCalculate(startDate, endDate,false));        
-    }    
+    }  
+    
+    @Test
+    void testInvalidInput() {
+    	LocalDate startDate = LocalDate.of(2020, 9,12);
+		LocalDate endDate = LocalDate.of(2020, 9,11);
+		
+		Exception exception = assertThrows(InvalidInputException.class, () ->{
+			hotelReservationSystem.findcheapestHotel(startDate, endDate, false);
+		});
+		
+		assertEquals("Start date must be before or equal to the end date.",exception.getMessage());
+    }
+    
+    @Test
+    void testInvalidInputStartDate() {
+    	LocalDate startDate = LocalDate.of(2020, 9,11);
+		LocalDate endDate = null;
+		
+		Exception exception1 = assertThrows(InvalidInputException.class, () -> {
+			hotelReservationSystem.findcheapestHotel(startDate, endDate ,true);
+		});
+		assertEquals("Start and end date caanot be null",exception1.getMessage());
+
+    }
     
 }

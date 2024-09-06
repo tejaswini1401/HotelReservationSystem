@@ -22,34 +22,49 @@ public class HotelReservationSystem {
 		return hotels;
 	}
 	
-	public List<Hotel> findCheapestHotel(LocalDate startTime, LocalDate endTime, boolean isRewardCustomer) {
-		List<Hotel> cheapestHotel = new ArrayList<>();
+	public void validInput(LocalDate startTime, LocalDate endTime, boolean isRewardCustomer) throws  InvalidInputException{
+		if(startTime == null || endTime == null) {
+			throw new InvalidInputException("Start and end date caanot be null");
+		}
+		if(startTime.isAfter(endTime)) {
+			throw new InvalidInputException("Start date must be before or equal to the end date.");
+		}
+		if(!isRewardCustomer && isRewardCustomer) {
+			throw new InvalidInputException("Invalid customer type");
+		}
+	}
+	
+	public List<Hotel> findcheapestHotel(LocalDate startTime, LocalDate endTime , boolean isRewardCustomer) throws InvalidInputException {
+		validInput(startTime,endTime,isRewardCustomer);
+		List<Hotel> chepestHotel = new ArrayList<>();
 		double minRate = Double.MAX_VALUE;
-		
 		for(Hotel hotel : hotels) {
-			double totalRate = hotel.totalRateCalculate(startTime, endTime, isRewardCustomer);
+			double totalRate = hotel.totalRateCalculate(startTime, endTime ,isRewardCustomer);
+			
 			if(totalRate < minRate) {
 				minRate = totalRate;
-				cheapestHotel.clear();
-				cheapestHotel.add(hotel);
+				chepestHotel.clear();
+				chepestHotel.add(hotel);
 			}else if(totalRate == minRate) {
-				cheapestHotel.add(hotel);
+				chepestHotel.add(hotel);
 			}
 		}
 		
-		List<Hotel> bestRatedCheapestHotel = new ArrayList<>();
 		int highestRating = Integer.MIN_VALUE;
+		List<Hotel> HighRatedcheapestHotel = new ArrayList<>();
 		
-		for(Hotel hotel : cheapestHotel) {
+		for(Hotel hotel : chepestHotel) {
 			if(hotel.getRating() > highestRating) {
 				highestRating = hotel.getRating();
-				bestRatedCheapestHotel.clear();
-				bestRatedCheapestHotel.add(hotel);
-			}else if (hotel.getRating() == highestRating) {
-				bestRatedCheapestHotel.add(hotel);
+				HighRatedcheapestHotel.clear();
+				HighRatedcheapestHotel.add(hotel);
+			}else if(highestRating == hotel.getRating() ) {
+				HighRatedcheapestHotel.add(hotel);
 			}
 		}
-		return bestRatedCheapestHotel;
+	
+		return HighRatedcheapestHotel;
+		
 	}
 	
 	public List<Hotel> findBestRatedHotel(LocalDate startTime, LocalDate endTime, boolean isRewardCustomer) {
