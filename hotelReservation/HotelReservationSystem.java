@@ -3,6 +3,7 @@ package com.hotelReservation;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HotelReservationSystem {
 	
@@ -34,54 +35,37 @@ public class HotelReservationSystem {
 		}
 	}
 	
-	public List<Hotel> findcheapestHotel(LocalDate startTime, LocalDate endTime , boolean isRewardCustomer) throws InvalidInputException {
-		validInput(startTime,endTime,isRewardCustomer);
-		List<Hotel> chepestHotel = new ArrayList<>();
-		double minRate = Double.MAX_VALUE;
-		for(Hotel hotel : hotels) {
-			double totalRate = hotel.totalRateCalculate(startTime, endTime ,isRewardCustomer);
-			
-			if(totalRate < minRate) {
-				minRate = totalRate;
-				chepestHotel.clear();
-				chepestHotel.add(hotel);
-			}else if(totalRate == minRate) {
-				chepestHotel.add(hotel);
-			}
-		}
-		
-		int highestRating = Integer.MIN_VALUE;
-		List<Hotel> HighRatedcheapestHotel = new ArrayList<>();
-		
-		for(Hotel hotel : chepestHotel) {
-			if(hotel.getRating() > highestRating) {
-				highestRating = hotel.getRating();
-				HighRatedcheapestHotel.clear();
-				HighRatedcheapestHotel.add(hotel);
-			}else if(highestRating == hotel.getRating() ) {
-				HighRatedcheapestHotel.add(hotel);
-			}
-		}
-	
-		return HighRatedcheapestHotel;
+	public List<Hotel> findcheapestHotel(LocalDate startDate, LocalDate endDate , boolean isRewardCustomer) throws InvalidInputException {
+		validInput(startDate,endDate,isRewardCustomer);	        
+	        double minRate = hotels.stream()
+	                .mapToDouble(hotel -> hotel.totalRateCalculate(startDate, endDate, isRewardCustomer))
+	                .min().orElseThrow();
+
+	        List<Hotel> cheapestHotels = hotels.stream()
+	                .filter(hotel -> hotel.totalRateCalculate(startDate, endDate, isRewardCustomer) == minRate)
+	                .collect(Collectors.toList());
+
+	        int maxRating = cheapestHotels.stream()
+	                .mapToInt(Hotel::getRating)
+	                .max().orElseThrow();
+
+	        return cheapestHotels.stream()
+	                .filter(hotel -> hotel.getRating() == maxRating)
+	                .collect(Collectors.toList());
 		
 	}
 	
-	public List<Hotel> findBestRatedHotel(LocalDate startTime, LocalDate endTime, boolean isRewardCustomer) {
+	public List<Hotel> findBestRatedHotel(LocalDate startDate, LocalDate endDate, boolean isRewardCustomer) throws InvalidInputException{
 		
-		List<Hotel> bestRatedHotel = new ArrayList<>();
-		int highestRating = Integer.MIN_VALUE;
-		
-		for(Hotel hotel : hotels) {
-			if(hotel.getRating() > highestRating) {
-				highestRating = hotel.getRating();
-				bestRatedHotel.clear();
-				bestRatedHotel.add(hotel);
-			}else if (hotel.getRating() == highestRating) {
-				bestRatedHotel.add(hotel);
-			}
-		}
-		return bestRatedHotel;
+		 validInput(startDate, endDate, isRewardCustomer);
+
+	        int highestRating = hotels.stream()
+	                .mapToInt(Hotel::getRating)
+	                .max().orElseThrow();
+
+	        return hotels.stream()
+	                .filter(hotel -> hotel.getRating() == highestRating)
+	                .collect(Collectors.toList());
 	}
 
 	public static void main(String[] args) {

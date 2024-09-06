@@ -84,7 +84,7 @@ class HotelReservationSystemTest {
     }
     
     @Test
-    void testFindBestRatedHotel() {
+    void testFindBestRatedHotel() throws InvalidInputException {
         LocalDate startDate = LocalDate.of(2020, 9,11); 
         LocalDate endDate = LocalDate.of(2020, 9, 12);   
 
