@@ -22,19 +22,21 @@ public class Hotel {
 	}
 
 	public double totalRateCalculate(LocalDate startDate, LocalDate endDate, boolean isRewardCustomer) {
-        double totalRate = 0;
-        LocalDate date = startDate;
-
-        while (!date.isAfter(endDate)) {
-           boolean isWeekEnd = date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY;
-           if(isRewardCustomer) {
-        	   totalRate +=  isWeekEnd ? weekendReward : weekdayReward;
-           }else {
-        	   totalRate += isWeekEnd ? weekendRate : weekdayRate;
-           }
-        }
-        return totalRate;
-    }
+		double totalRate = 0.0;
+		LocalDate date = startDate; 
+				
+		while(!date.isAfter(endDate)) { 
+			boolean isWeekend = date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY;
+			  
+			  if(isRewardCustomer) {
+				  totalRate +=  isWeekend ? weekendReward :weekdayReward;
+			  }else {
+				  totalRate +=  isWeekend ?weekendRate : weekdayRate;
+			  }
+			  date = date.plusDays(1);
+		}
+		return totalRate;
+	}
 
 	public String getName() {
 		return name;
