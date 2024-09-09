@@ -19,17 +19,18 @@ class HotelReservationSystemTest {
     @BeforeEach
     void setUp() {
         hotelReservationSystem = new HotelReservationSystem();
-        hotelReservationSystem.addHotel("Lakewood", 110, 90,80,80,3);
-        hotelReservationSystem.addHotel("Bridgewood", 150, 50,110,50,4);
-        hotelReservationSystem.addHotel("Ridgewood", 220, 150,100,40,5);
+        hotelReservationSystem.addHotel("Lakewood", 110, 90, 80, 80, 3);
+        hotelReservationSystem.addHotel("Bridgewood", 150, 50, 110, 50, 4);
+        hotelReservationSystem.addHotel("Ridgewood", 220, 150, 100, 40, 5);
     }
 
     @Test
     void testAddHotel() {
-        
         List<Hotel> hotels = hotelReservationSystem.getHotel();
         
         assertEquals(3, hotels.size());
+        
+        // Lakewood assertions
         assertEquals("Lakewood", hotels.get(0).getName());
         assertEquals(110, hotels.get(0).getWeekdayRate());
         assertEquals(90, hotels.get(0).getWeekendRate());
@@ -37,7 +38,7 @@ class HotelReservationSystemTest {
         assertEquals(80, hotels.get(0).getWeekendReward());
         assertEquals(3, hotels.get(0).getRating());
 
-        
+        // Bridgewood assertions
         assertEquals("Bridgewood", hotels.get(1).getName());
         assertEquals(150, hotels.get(1).getWeekdayRate());
         assertEquals(50, hotels.get(1).getWeekendRate());
@@ -45,81 +46,81 @@ class HotelReservationSystemTest {
         assertEquals(50, hotels.get(1).getWeekendReward());
         assertEquals(4, hotels.get(1).getRating());
 
-        
+        // Ridgewood assertions
         assertEquals("Ridgewood", hotels.get(2).getName());
         assertEquals(220, hotels.get(2).getWeekdayRate());
         assertEquals(150, hotels.get(2).getWeekendRate());
         assertEquals(100, hotels.get(2).getWeekdayReward());
         assertEquals(40, hotels.get(2).getWeekendReward());
         assertEquals(5, hotels.get(2).getRating());
-       
     }
     
     @Test
-	void testrewardCustomerCheapestHotel() throws InvalidInputException {
-		LocalDate startDate = LocalDate.of(2020, 9,11);//friday
-		LocalDate endDate = LocalDate.of(2020, 9,12);//saturday
-		
-		List<Hotel> rewardbestratedchepestHotel = hotelReservationSystem.findcheapestHotel(startDate, endDate,true);
-		
-     	assertNotNull(rewardbestratedchepestHotel);
-     	assertEquals(1,rewardbestratedchepestHotel.size());
-     	assertEquals("Ridgewood",rewardbestratedchepestHotel.get(0).getName());
-     	assertEquals(140,rewardbestratedchepestHotel.get(0).totalRateCalculate(startDate, endDate, true));
-	}
-   
-    @Test
-    void testFindCheapestBestRatedHotel() throws InvalidInputException{
-    	 LocalDate startDate = LocalDate.of(2020, 9,11); 
-         LocalDate endDate = LocalDate.of(2020, 9, 12);   
+    void testRewardCustomerCheapestHotel() throws InvalidInputException {
+        String startDate = "11Sep2020";
+        String endDate = "12Sep2020";
+        
+        List<Hotel> rewardBestRatedCheapestHotel = hotelReservationSystem.findCheapestHotel(startDate, endDate, true);
+        
+        assertNotNull(rewardBestRatedCheapestHotel);
+        assertEquals(1, rewardBestRatedCheapestHotel.size());
+        assertEquals("Ridgewood", rewardBestRatedCheapestHotel.get(0).getName());
+        assertEquals(140, rewardBestRatedCheapestHotel.get(0).totalRateCalculate(
+            hotelReservationSystem.parseDate(startDate), hotelReservationSystem.parseDate(endDate), true
+        ));
+    }
 
-         List<Hotel> bestRatedcheapestHotels = hotelReservationSystem.findcheapestHotel(startDate, endDate, false);
-         
-         assertNotNull(bestRatedcheapestHotels);
-         assertEquals(1,bestRatedcheapestHotels.size());        
-         
-         assertEquals("Bridgewood",bestRatedcheapestHotels.get(0).getName());
-         assertEquals(4,bestRatedcheapestHotels.get(0).getRating());
-         assertEquals(200,bestRatedcheapestHotels.get(0).totalRateCalculate(startDate, endDate, false));        
+    @Test
+    void testFindCheapestBestRatedHotel() throws InvalidInputException {
+        String startDate = "11Sep2020"; 
+        String endDate = "12Sep2020";   
+
+        List<Hotel> bestRatedCheapestHotels = hotelReservationSystem.findCheapestHotel(startDate, endDate, false);
+        
+        assertNotNull(bestRatedCheapestHotels);
+        assertEquals(1, bestRatedCheapestHotels.size());        
+        assertEquals("Bridgewood", bestRatedCheapestHotels.get(0).getName());
+        assertEquals(4, bestRatedCheapestHotels.get(0).getRating());
+        assertEquals(200, bestRatedCheapestHotels.get(0).totalRateCalculate(
+            hotelReservationSystem.parseDate(startDate), hotelReservationSystem.parseDate(endDate), false
+        ));
     }
-    
+
     @Test
     void testFindBestRatedHotel() throws InvalidInputException {
-        LocalDate startDate = LocalDate.of(2020, 9,11); 
+        LocalDate startDate = LocalDate.of(2020, 9, 11); 
         LocalDate endDate = LocalDate.of(2020, 9, 12);   
 
-        List<Hotel> bestRatedHotels = hotelReservationSystem.findBestRatedHotel(startDate, endDate,false);
+        List<Hotel> bestRatedHotels = hotelReservationSystem.findBestRatedHotel(startDate, endDate, false);
         
         assertNotNull(bestRatedHotels);
-        assertEquals(1,bestRatedHotels.size());        
-        
-        assertEquals("Ridgewood",bestRatedHotels.get(0).getName());
-        assertEquals(5,bestRatedHotels.get(0).getRating());
-        assertEquals(370,bestRatedHotels.get(0).totalRateCalculate(startDate, endDate,false));        
+        assertEquals(1, bestRatedHotels.size());
+        assertEquals("Ridgewood", bestRatedHotels.get(0).getName());
+        assertEquals(5, bestRatedHotels.get(0).getRating());
+        assertEquals(370, bestRatedHotels.get(0).totalRateCalculate(startDate, endDate, false));        
     }  
     
     @Test
     void testInvalidInput() {
-    	LocalDate startDate = LocalDate.of(2020, 9,12);
-		LocalDate endDate = LocalDate.of(2020, 9,11);
-		
-		Exception exception = assertThrows(InvalidInputException.class, () ->{
-			hotelReservationSystem.findcheapestHotel(startDate, endDate, false);
-		});
-		
-		assertEquals("Start date must be before or equal to the end date.",exception.getMessage());
+        String startDate = "12Sep2020"; 
+        String endDate = "11Sep2020";
+        
+        Exception exception = assertThrows(InvalidInputException.class, () -> {
+            hotelReservationSystem.findCheapestHotel(startDate, endDate, false);
+        });
+        
+        assertEquals("Start date must be before or equal to the end date.", exception.getMessage());
     }
-    
+
     @Test
     void testInvalidInputStartDate() {
-    	LocalDate startDate = LocalDate.of(2020, 9,11);
-		LocalDate endDate = null;
-		
-		Exception exception1 = assertThrows(InvalidInputException.class, () -> {
-			hotelReservationSystem.findcheapestHotel(startDate, endDate ,true);
-		});
-		assertEquals("Start and end date caanot be null",exception1.getMessage());
-
+        String startDate = "11Sep2020"; 
+        String endDate = null; 
+        
+        Exception exception = assertThrows(InvalidInputException.class, () -> {
+            hotelReservationSystem.findCheapestHotel(startDate, endDate, true);
+        });
+        
+        assertEquals("Start and end date cannot be null", exception.getMessage());
     }
-    
 }

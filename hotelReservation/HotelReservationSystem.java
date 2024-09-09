@@ -1,13 +1,17 @@
 package com.hotelReservation;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class HotelReservationSystem {
 	
 	private List<Hotel> hotels;
+    private static final String DATE_REGEX = "\\d{2}[A-Za-z]{3}\\d{4}";
 	
 	public HotelReservationSystem() {
 		this.hotels = new ArrayList<>();
@@ -23,42 +27,52 @@ public class HotelReservationSystem {
 		return hotels;
 	}
 	
-	public void validInput(LocalDate startTime, LocalDate endTime, boolean isRewardCustomer) throws  InvalidInputException{
-		if(startTime == null || endTime == null) {
-			throw new InvalidInputException("Start and end date caanot be null");
-		}
-		if(startTime.isAfter(endTime)) {
-			throw new InvalidInputException("Start date must be before or equal to the end date.");
-		}
-		if(!isRewardCustomer && isRewardCustomer) {
-			throw new InvalidInputException("Invalid customer type");
-		}
+	public void validInput(String startDate, String endDate) throws InvalidInputException {
+	    if (startDate == null || endDate == null) {
+	        throw new InvalidInputException("Start and end date cannot be null");
+	    }
+
+	    if (!Pattern.matches(DATE_REGEX, startDate) || !Pattern.matches(DATE_REGEX, endDate)) {
+	        throw new InvalidInputException("Invalid date format. Use format: ddMMMyyyy (e.g., 11Sep2020)");
+	    }
 	}
-	
-	public List<Hotel> findcheapestHotel(LocalDate startDate, LocalDate endDate , boolean isRewardCustomer) throws InvalidInputException {
-		validInput(startDate,endDate,isRewardCustomer);	        
-	        double minRate = hotels.stream()
-	                .mapToDouble(hotel -> hotel.totalRateCalculate(startDate, endDate, isRewardCustomer))
-	                .min().orElseThrow();
 
-	        List<Hotel> cheapestHotels = hotels.stream()
-	                .filter(hotel -> hotel.totalRateCalculate(startDate, endDate, isRewardCustomer) == minRate)
-	                .collect(Collectors.toList());
-
-	        int maxRating = cheapestHotels.stream()
-	                .mapToInt(Hotel::getRating)
-	                .max().orElseThrow();
-
-	        return cheapestHotels.stream()
-	                .filter(hotel -> hotel.getRating() == maxRating)
-	                .collect(Collectors.toList());
-		
+	public LocalDate parseDate(String date) {
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy").withLocale(Locale.ENGLISH);
+	    return LocalDate.parse(date, formatter);
 	}
-	
+
+
+    public List<Hotel> findCheapestHotel(String startDateStr, String endDateStr, boolean isRewardCustomer) throws InvalidInputException {
+        validInput(startDateStr, endDateStr);
+
+        LocalDate startDate = parseDate(startDateStr);
+        LocalDate endDate = parseDate(endDateStr);
+
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidInputException("Start date must be before or equal to the end date.");
+        }
+
+        double minRate = hotels.stream()
+            .mapToDouble(hotel -> hotel.totalRateCalculate(startDate, endDate, isRewardCustomer))
+            .min()
+            .orElseThrow(() -> new InvalidInputException("No hotel rates found"));
+
+        List<Hotel> cheapestHotels = hotels.stream()
+            .filter(hotel -> hotel.totalRateCalculate(startDate, endDate, isRewardCustomer) == minRate)
+            .collect(Collectors.toList());
+
+        int maxRating = cheapestHotels.stream()
+            .mapToInt(Hotel::getRating)
+            .max()
+            .orElseThrow(() -> new InvalidInputException("No ratings found"));
+
+        return cheapestHotels.stream()
+            .filter(hotel -> hotel.getRating() == maxRating)
+            .collect(Collectors.toList());
+    }
 	public List<Hotel> findBestRatedHotel(LocalDate startDate, LocalDate endDate, boolean isRewardCustomer) throws InvalidInputException{
 		
-		 validInput(startDate, endDate, isRewardCustomer);
-
 	        int highestRating = hotels.stream()
 	                .mapToInt(Hotel::getRating)
 	                .max().orElseThrow();
