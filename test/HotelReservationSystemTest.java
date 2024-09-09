@@ -30,7 +30,6 @@ class HotelReservationSystemTest {
         
         assertEquals(3, hotels.size());
         
-        // Lakewood assertions
         assertEquals("Lakewood", hotels.get(0).getName());
         assertEquals(110, hotels.get(0).getWeekdayRate());
         assertEquals(90, hotels.get(0).getWeekendRate());
@@ -38,7 +37,6 @@ class HotelReservationSystemTest {
         assertEquals(80, hotels.get(0).getWeekendReward());
         assertEquals(3, hotels.get(0).getRating());
 
-        // Bridgewood assertions
         assertEquals("Bridgewood", hotels.get(1).getName());
         assertEquals(150, hotels.get(1).getWeekdayRate());
         assertEquals(50, hotels.get(1).getWeekendRate());
@@ -46,7 +44,6 @@ class HotelReservationSystemTest {
         assertEquals(50, hotels.get(1).getWeekendReward());
         assertEquals(4, hotels.get(1).getRating());
 
-        // Ridgewood assertions
         assertEquals("Ridgewood", hotels.get(2).getName());
         assertEquals(220, hotels.get(2).getWeekdayRate());
         assertEquals(150, hotels.get(2).getWeekendRate());
